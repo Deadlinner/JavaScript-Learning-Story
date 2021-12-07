@@ -1,0 +1,18 @@
+# 理解ES6中的let声明导致的暂时性死区
+自ES5起，JavaScript中，执行上下文（Execution Context）的 变量对象 （variable object）修改成了 词法环境（Lexical Environment ）。
+
+# 什么叫词法环境？
+> 总的来说，词法环境就是某些语言中用来管理静态作用域的一种机制。词法环境（Lexical Environment）首次出现在ECMAScript-262-5版规范中（也就是ES5）.
+
+# 作用域与静态作用域
+作用域，就是将变量和值关联在一起的一个区域，或者说，作用域使得变量具有逻辑意义上的边界。 与执行上下文不是同一种概念。
+作用域分为全局作用域、函数作用域以及块级作用域；在ES6之前，JS并没有实现块级作用域的语法，但是可以通过立即执行函数来实现近似的功能： 
+~~~
+ var x = 10;
+ if(true){
+     (function(arg){
+         console.log(arg) //20
+     })(20);   
+ }
+ console.log(x) //10
+~~~
