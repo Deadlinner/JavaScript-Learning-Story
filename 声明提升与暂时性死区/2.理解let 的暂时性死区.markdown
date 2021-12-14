@@ -29,3 +29,78 @@
 - ThisBinding
 
 词法环境是一种规范类型，基于代码词法的嵌套结构来记录标识符和具体变量或者函数的关联；简单来说，词法环境就是建立了标识符——变量的映射表。变量环境也是词法环境的一种
+
+编译并创建执行上下文时：
+- 函数内部通过var声明的变量，在编译阶段存放在 变量环境里。
+- 通过let声明的变量，在编译阶段会存放到词法环境中
+- 在函数内部的块作用域中，通过let声明的变量不会存放到词法环境中
+
+执行到函数中块作用域：
+- 块作用域let变量会存放在词法环境中独立的区域中，此区域不会影响块作用域外的变量
+- 在词法环境内部，维护着一个小型的栈结构
+
+### 作用域链
+在每个执行上下文的变量环境中，都包含了一个外部引用，用来指向外部的执行上下文 - outer，由词法作用域 指定
+> outer 指向 外层 执行上下文
+
+### this
+this是和执行上下文绑定的，也就是说每个执行上下文都有一个this
+
+###### 改变this指向的三种方式：
+- 通过函数的  call/apply/bing 方法设置
+- 通过对象调用方法设置
+  - 在全局环境中调用一个函数，this指向全局变量
+  ~~~
+  var obj = {
+      showThis: function(){
+          console.log(this)
+      }
+  }
+  let foo = obj.showThis
+  foo(); // this指向window
+  ~~~ 
+  - 通过对象调用函数，this指向对象本身
+  ~~~
+  var obj = {
+      showThis: function(){
+          console.log(this)
+      }
+  }
+  obj.showThis（）// this指向obj
+  obj.showThis.call(obj) 
+  ~~~ 
+  - 通过构造函数设置；构造函数中的this 会指向创建出来的实例对象
+  ~~~
+  function Person(){
+      this.name = 'bar';
+  }
+  var p = new Person();
+  console.log(p)
+  ~~~
+  > 使用new调用构造函数时，会先创建出一个空对象tempObj，然后call函数把构造函数中的this指针修改为这个空对象tempObj,执行完环境后，空对象也有了相关的属性，然后再将对象tempObj返回出去
+  
+  ~~~
+  function Person() {
+  this.name = 'zhar';
+  return {};
+  }
+  var p = new Person();
+  console.log(p.name);//undefined
+  //--------------------------------------
+  function Person() {
+  this.name = 'zhar';
+  return {name:'tom'};
+  }
+  var p = new Person();
+  console.log(p.name);//tom      如果构造函数返回对象(Object,Array,Function)，那 this 将指向这个对象，其它基础类型则不受影响
+  //--------------------------------------
+  function Person() {
+  this.name = 'zhar';
+  return 1;//number string boolean 等
+  }
+  var p = new Person();
+  console.log(p.name);//zhar
+  ~~~
+
+所以，如无必要我们通常不要设置构造函数的返回值
+
