@@ -1,4 +1,4 @@
-### 理解ES6中的let声明导致的暂时性死区
+# 理解ES6中的let声明导致的暂时性死区
 自ES5起，JavaScript中，执行上下文（Execution Context）的 变量对象 （variable object）修改成了 词法环境（Lexical Environment ）。
 
 ### 什么叫词法环境？
@@ -39,6 +39,21 @@
 - 块作用域let变量会存放在词法环境中独立的区域中，此区域不会影响块作用域外的变量
 - 在词法环境内部，维护着一个小型的栈结构
 
+### 暂时性死区
+~~~
+function a(){
+  console.log(varA) // varA is undefined
+  var varA = 3
+  {
+    console.log(letA) //ReferenceError
+    let letA = 1
+  }
+}
+a()
+~~~
+以上代码在执行至函数a的内部块作用域时，letA变量已经被注册（uninitialized ）至a的函数上下文中词法环境的内部栈中，因此JS在执行log打印letA时，会找到一个已注册但是还未初始化的变量letA，由此报错 ：
+> Reference Error: Cannot access 'letA' before initialization
+这种由于变量未初始化导致的报错就是暂时性死区
 ### 作用域链
 在每个执行上下文的变量环境中，都包含了一个外部引用，用来指向外部的执行上下文 - outer，由词法作用域 指定
 > outer 指向 外层 执行上下文
