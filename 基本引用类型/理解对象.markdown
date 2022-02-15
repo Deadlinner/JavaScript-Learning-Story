@@ -1,0 +1,16 @@
+  引用值（或者对象） 被认为时某个特定引用类型的实例。在ECMAScript中，引用类型时把数据和功能组合在一起的结构。
+  ### Date
+  ECMAScript参考了早期Java的util.Date，因此，Date类型将日期保存为1970年至今的毫秒数；
+  ```
+  let now = new Date() // 创建当前时间的日期对象（当地时区）
+
+  let now = new Date(2022, 0)           //创建当地时区的日期对象
+  let now = new Date(Date.UTC(2022, 0)) //创建GMT区的日期对象
+
+  let now = new Date(2022, 4, 5, 17, 55, 55)           //创建当地时区的日期对象
+  let now = new Date(Date.UTC(2022, 4, 5, 17, 55, 55)) //创建GMT 区的日期对象
+  ```
+
+  在给 new Date() 传入时间参数时，会隐式调用 Date.UTC()；  Date.UTC() 的前两个参数为必填（年， 月），如果不提供日，默认为1日，其他参数默认是0 .
+
+  Date对象可直接使用比较符号进行大小比较： 重写了valueOf（）方法，返回毫秒数表示。

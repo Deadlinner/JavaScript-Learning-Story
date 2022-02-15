@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <style>
+        ul {
+            list-style: none;
+        }
+    </style>
+    <ul></ul>
+
+    <script>
+        var x = 1;
+
+        var o = {
+            x: 2,
+            y: function () {
+                console.log(this.x);
+            }
+        };
+
+        setTimeout(o.y, 1000);
+    </script>
+</body>
+
+</html>
